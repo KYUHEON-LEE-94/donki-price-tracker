@@ -1,5 +1,6 @@
 'use client';
 
+import VerifyModal from './compoenets/VerifyModal';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Search, MapPin, Calendar, Trophy, Star, Image as ImageIcon } from 'lucide-react';
@@ -19,6 +20,7 @@ interface PriceReport {
 }
 
 export default function SubmitListPage() {
+  const [showModal, setShowModal] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
@@ -213,7 +215,7 @@ export default function SubmitListPage() {
                     <td className="px-6 py-4 font-semibold text-green-600">
                       ¥{item.price.toLocaleString()}
                       {index === 0 && (
-                        <span className="ml-2 text-sm text-green-500">최저가!</span>
+                        <span className="ml-2 text-sm text-red-500">최저가!</span>
                       )}
                     </td>
                     <td className="px-6 py-4 flex items-center gap-1 text-gray-600">
@@ -245,6 +247,26 @@ export default function SubmitListPage() {
             </table>
           </>
         )}
+            <>
+      {/* 기존 리스트 컴포넌트 */}
+
+      <div className="mt-6 flex justify-end">
+        <button
+          onClick={() => setShowModal(true)}
+          className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl shadow-lg"
+        >
+          ✅ 최저가 인증 신청
+        </button>
+      </div>
+
+      <VerifyModal isOpen={showModal} onClose={() => setShowModal(false)} />
+    </>
+        <div className="mt-8 text-center">
+          <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6">
+            <p className="text-gray-600 mb-2">💡 <strong>팁:</strong> 가격은 불규칙하게 업데이트됩니다.</p>
+            <p className="text-sm text-gray-500">마지막 업데이트: 2025. 05. 29</p>
+          </div>
+        </div>
       </div>
     </div>
   );

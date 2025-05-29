@@ -2,8 +2,8 @@ import './globals.css';
 
 // app/layout.tsx
 export const metadata = {
-  title: 'Donki Price Tracker',
-  description: '도톤보리 최저가 비교 사이트',
+  title: '돈키호테 최저가 비교',
+  description: '돈키호테 최저가 비교 사이트',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
