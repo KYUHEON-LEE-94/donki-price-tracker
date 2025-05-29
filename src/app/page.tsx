@@ -13,6 +13,7 @@ interface PriceReport {
     store_name: string;
     store_area: string;
     google_url: string;
+    store_url: string;
   };
   photo_url?: string;
 }
@@ -20,6 +21,7 @@ interface PriceReport {
 export default function SubmitListPage() {
   const [searchInput, setSearchInput] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const [selectedArea, setSelectedArea] = useState<string>('오사카');
   const [storeAreas, setStoreAreas] = useState<string[]>([]);
@@ -146,25 +148,42 @@ export default function SubmitListPage() {
               setSearchInput(e.target.value);
               setSelectedProduct(null);
             }}
+            onKeyDown={(e) => {
+              if (e.key === 'ArrowDown') {
+                setHighlightedIndex((prev) =>
+                  prev < suggestions.length - 1 ? prev + 1 : 0
+                );
+              } else if (e.key === 'ArrowUp') {
+                setHighlightedIndex((prev) =>
+                  prev > 0 ? prev - 1 : suggestions.length - 1
+                );
+              } else if (e.key === 'Enter') {
+                if (highlightedIndex >= 0 && highlightedIndex < suggestions.length) {
+                  setSelectedProduct(suggestions[highlightedIndex]);
+                  setSuggestions([]); // 닫기
+                }
+              }
+            }}
             placeholder="상품명을 입력하세요 (예: 기노코)"
             className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 shadow focus:outline-none focus:ring-2 focus:ring-blue-100"
           />
           {suggestions.length > 0 && (
-            <ul className="absolute top-full left-0 w-full bg-white border border-gray-200 rounded-xl shadow-md mt-2 z-10 max-h-60 overflow-y-auto">
-              {suggestions.map((name) => (
-                <li
-                  key={name}
-                  onClick={() => {
-                    setSelectedProduct(name);
-                    setSearchInput(name);
-                    setSuggestions([]);
-                  }}
-                  className="px-4 py-2 hover:bg-blue-50 cursor-pointer"
-                >
-                  {name}
-                </li>
-              ))}
-            </ul>
+            <ul className="absolute z-10 w-full bg-white shadow-lg rounded-md border mt-1">
+            {suggestions.map((suggestion, index) => (
+              <li
+                key={suggestion}
+                onClick={() => {
+                  setSelectedProduct(suggestion);
+                  setSuggestions([]);
+                }}
+                className={`px-4 py-2 cursor-pointer ${
+                  highlightedIndex === index ? 'bg-blue-100 font-semibold' : ''
+                }`}
+              >
+                {suggestion}
+              </li>
+            ))}
+          </ul>
           )}
         </div>
 
@@ -190,7 +209,7 @@ export default function SubmitListPage() {
                 {data.map((item, index) => (
                   <tr key={item.id} className="hover:bg-gray-50 transition">
                     <td className="px-6 py-4">{getRankIcon(index)}</td>
-                    <td className="px-6 py-4">{item.stores.store_name}</td>
+                    <td className="px-6 py-4"> <a href={item.stores.store_url}>{item.stores.store_name}</a></td>
                     <td className="px-6 py-4 font-semibold text-green-600">
                       ¥{item.price.toLocaleString()}
                       {index === 0 && (
