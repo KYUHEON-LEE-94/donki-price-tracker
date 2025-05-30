@@ -27,6 +27,7 @@ export default function SubmitListPage() {
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const [selectedArea, setSelectedArea] = useState<string>('오사카');
   const [storeAreas, setStoreAreas] = useState<string[]>([]);
+  const [limit, setLimit] = useState(10); //최저가 출력 개수
   const [data, setData] = useState<PriceReport[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,7 +44,7 @@ export default function SubmitListPage() {
         .select('product_name')
         .ilike('product_name', `%${searchInput}%`)
         .neq('product_name', null)
-        .limit(30);
+        .limit(10);
 
       if (!error && data) {
         const uniqueNames = Array.from(
@@ -86,7 +87,7 @@ export default function SubmitListPage() {
         .select('*, stores(*)')
         .eq('product_name', selectedProduct)
         .order('price', { ascending: true })
-        .limit(100);
+        .limit(limit);
 
       if (error) {
         setError(error.message);
@@ -99,7 +100,7 @@ export default function SubmitListPage() {
     };
 
     fetchPriceData();
-  }, [selectedProduct, selectedArea]);
+  }, [selectedProduct, selectedArea, limit]);
 
   const getRankIcon = (index: number) => {
     switch (index) {
@@ -136,6 +137,15 @@ export default function SubmitListPage() {
                   {area}
                 </option>
               ))}
+            </select>
+            <select
+              value={limit}
+              onChange={(e) => setLimit(Number(e.target.value))}
+              className="border px-3 py-1 rounded-lg shadow"
+            >
+              <option value={10}>10개</option>
+              <option value={20}>20개</option>
+              <option value={50}>50개</option>
             </select>
           </div>
         </div>
