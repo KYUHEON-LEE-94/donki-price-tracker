@@ -3,7 +3,7 @@
 import VerifyModal from './compoenets/VerifyModal';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Search, MapPin, Calendar, Trophy, Star, Image as ImageIcon } from 'lucide-react';
+import { Search, MapPin, Calendar, Trophy, Star, CheckCircle  } from 'lucide-react';
 
 interface PriceReport {
   id: number;
@@ -16,7 +16,7 @@ interface PriceReport {
     google_url: string;
     store_url: string;
   };
-  photo_url?: string;
+  is_verified?: string;
 }
 
 export default function SubmitListPage() {
@@ -213,7 +213,7 @@ export default function SubmitListPage() {
                   <th className="text-left px-6 py-3">가격</th>
                   <th className="text-left px-6 py-3">제보일자</th>
                   <th className="text-left px-6 py-3">지도</th>
-                  <th className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">사진</th>
+                  <th className="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">인증</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 text-sm">
@@ -242,12 +242,12 @@ export default function SubmitListPage() {
                       </a>
                     </td>
                     <td className="px-6 py-4">
-                      {item.photo_url ? (
-                        <a href={item.photo_url} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline inline-flex items-center gap-1">
-                          <ImageIcon className="w-4 h-4" /> 인증 사진
-                        </a>
+                      {item.is_verified ? (
+                        <div className="inline-flex items-center gap-1 text-green-600 font-medium">
+                          <CheckCircle className="w-4 h-4" /> 인증 완료
+                        </div>
                       ) : (
-                        <span className="text-gray-400 text-sm">-</span>
+                        <span className="text-gray-400 text-sm">미인증</span>
                       )}
                     </td>
                   </tr>

@@ -11,11 +11,11 @@ export const metadata = {
   openGraph: {
     title: '돈키호테 오사카 최저가 비교',
     description: '오사카 돈키호테 인기 상품 실시간 최저가 비교 플랫폼',
-    url: 'https://your-deploy-url.vercel.app',
+    url: 'https://donki-price-tracker.vercel.app/',
     siteName: '돈키호테 최저가 비교',
     images: [
       {
-        url: 'https://your-deploy-url.vercel.app/og-image.png',
+        url: 'https://donki-price-tracker.vercel.app/favicon.ico',
         width: 1200,
         height: 630,
         alt: '돈키호테 최저가 비교 대표 이미지',
