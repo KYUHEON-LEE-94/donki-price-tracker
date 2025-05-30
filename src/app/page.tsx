@@ -24,7 +24,7 @@ export default function SubmitListPage() {
   const [searchInput, setSearchInput] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
-  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<string>('');
   const [selectedArea, setSelectedArea] = useState<string>('오사카');
   const [storeAreas, setStoreAreas] = useState<string[]>([]);
   const [limit, setLimit] = useState(10); //최저가 출력 개수
@@ -158,7 +158,7 @@ export default function SubmitListPage() {
             value={searchInput}
             onChange={(e) => {
               setSearchInput(e.target.value);
-              setSelectedProduct(null);
+              setSelectedProduct('');
             }}
             onKeyDown={(e) => {
               if (e.key === 'ArrowDown') {
@@ -269,7 +269,10 @@ export default function SubmitListPage() {
         </button>
       </div>
 
-      <VerifyModal isOpen={showModal} onClose={() => setShowModal(false)} />
+      <VerifyModal 
+        isOpen={showModal} 
+        onClose={() => setShowModal(false)} 
+        />
     </>
         <div className="mt-8 text-center">
           <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6">
