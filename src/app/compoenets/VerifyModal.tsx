@@ -33,6 +33,8 @@ export default function VerifyModal({ isOpen, onClose }: VerifyModalProps) {
         .from('price-certifications')
         .upload(filePath, file);
 
+        console.log(data?.fullPath);
+
       if (error) throw error;
 
       const { data: publicUrlData } = supabase.storage
@@ -56,10 +58,10 @@ export default function VerifyModal({ isOpen, onClose }: VerifyModalProps) {
       onClose();
     } catch (err: unknown) {
         if (err instanceof Error) {
-            alert('업로드 실패: ' + err.message);
-          } else {
-            alert('업로드 실패 (알 수 없는 오류)');
-          }
+    alert('업로드 실패: ' + err.message);
+  } else {
+    alert('업로드 실패 (알 수 없는 오류)');
+  }
     } finally {
       setIsUploading(false);
     }

@@ -29,7 +29,6 @@ export default function SubmitListPage() {
   const [storeAreas, setStoreAreas] = useState<string[]>([]);
   const [limit, setLimit] = useState(10); //최저가 출력 개수
   const [data, setData] = useState<PriceReport[]>([]);
-  const [error, setError] = useState<string | null>(null);
 
   // 상품명 자동완성
   useEffect(() => {
@@ -90,7 +89,7 @@ export default function SubmitListPage() {
         .limit(limit);
 
       if (error) {
-        setError(error.message);
+        console.error(error);
       } else {
         const filtered = data?.filter(
           (item) => item.stores.store_area === selectedArea
