@@ -3,7 +3,7 @@
 import VerifyModal from './compoenets/VerifyModal';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Search, MapPin, Calendar, Trophy, Star, CheckCircle  } from 'lucide-react';
+import { Search, MapPin, Calendar, Trophy, Star, CheckCircle, XCircle  } from 'lucide-react';
 
 interface PriceReport {
   id: number;
@@ -238,16 +238,18 @@ export default function SubmitListPage() {
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-blue-600 hover:underline"
                       >
-                        <MapPin className="w-4 h-4" /> 지도 보기
+                        <MapPin className="w-4 h-4" />
                       </a>
                     </td>
                     <td className="px-6 py-4">
                       {item.is_verified ? (
                         <div className="inline-flex items-center gap-1 text-green-600 font-medium">
-                          <CheckCircle className="w-4 h-4" /> 인증 완료
+                          <CheckCircle className="w-4 h-4" />
                         </div>
                       ) : (
-                        <span className="text-gray-400 text-sm">미인증</span>
+                        <div className="inline-flex items-center gap-1 text-gray-600 font-medium">
+                        <XCircle className="w-4 h-4" />
+                      </div>
                       )}
                     </td>
                   </tr>
