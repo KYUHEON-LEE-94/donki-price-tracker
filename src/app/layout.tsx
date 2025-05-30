@@ -4,6 +4,9 @@ import './globals.css';
 export const metadata = {
   title: '돈키호테 오사카 최저가 비교',
   description: '일본 돈키호테 오사카 지역의 인기 상품 최저가를 비교하고 실시간으로 확인하세요. 최저가 인증으로 더 많은 정보를 공유할 수 있습니다.',
+  icons: {
+    icon: '/favicon.ico',
+  },
   keywords: '돈키호테, 오사카, 최저가 비교, 일본 쇼핑, 가격비교, 돈키호테 가격, 일본 여행 쇼핑, 돈키호테 세일, 돈키호테 할인',
   openGraph: {
     title: '돈키호테 오사카 최저가 비교',
