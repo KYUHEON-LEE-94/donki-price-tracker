@@ -10,6 +10,7 @@ import LimitSelector from '@/app/components/common/LimitSelector';
 import AutoCompleteSearchInput from '@/app/components/common/AutoCompleteSearchInput';
 import PriceTable from '@/app/components/common/PriceTable';
 import VerifyModal from '@/app/components/modals/VerifyModal';
+import Footer from '@/app/components/common/Footer';
 import { Star } from 'lucide-react';
 
 export default function SubmitPage() {
@@ -63,6 +64,7 @@ export default function SubmitPage() {
 
         <VerifyModal isOpen={showModal} onClose={() => setShowModal(false)} />
       </div>
+      <Footer />
     </div>
   )
 }
