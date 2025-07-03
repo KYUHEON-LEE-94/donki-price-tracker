@@ -27,18 +27,24 @@ export function usePriceReports(selectedProduct: string, selectedArea: string, l
         return;
       }
 
-      const { data, error } = await supabase
+      let query = supabase
         .from('price_reports')
-        .select('*, stores(*)')
-        .eq('product_name', selectedProduct)
+        .select('*, stores!inner(*)')
+        .eq('product_name', selectedProduct);
+
+      if (selectedArea && selectedArea !== '전체') {
+        query = query.eq('stores.store_area', selectedArea);
+      }
+
+      const { data, error } = await query
         .order('price', { ascending: true })
         .limit(limit);
 
-      if (!error && data) {
-        const filtered = data.filter(
-          (item) => item.stores.store_area === selectedArea
-        );
-        setData(filtered);
+      if (error) {
+        console.error('Error fetching price reports:', error);
+        setData([]);
+      } else {
+        setData(data || []);
       }
     };
 
