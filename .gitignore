@@ -11,6 +11,26 @@
 !.yarn/versions
 .env.local
 
+# === Next.js ===
+.next/
+out/
+.cache/
+
+# === Supabase ===
+.supabase/
+supabase/.temp/
+supabase/migrations/.temp/
+supabase/config.toml
+.supabase/functions/.env
+.supabase/functions/node_modules/
+.supabase/functions/dist/
+
+# === 로그 및 빌드 파일 ===
+*.log
+*.tsbuildinfo
+trace/
+next-env.d.ts
+
 # testing
 /coverage
 
@@ -37,6 +57,14 @@ yarn-error.log*
 # vercel
 .vercel
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# IDE/에디터
+*.code-workspace
+*.swp
+
+# Test artifacts
+coverage/
+test-results/
+
+# === 기타 ===
+*.local
+*.sqlite
