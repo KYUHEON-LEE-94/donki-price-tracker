@@ -15,6 +15,10 @@ interface Store {
 
 export default function StoreAdminPage() {
   const [stores, setStores] = useState<Store[]>([]);
+  const [filteredStores, setFilteredStores] = useState<Store[]>([]);
+  const [areas, setAreas] = useState<string[]>([]);
+  const [selectedArea, setSelectedArea] = useState('전체');
+
   const [newStore, setNewStore] = useState<Omit<Store, 'id'>>({
     store_name: '',
     store_area: '',
@@ -30,12 +34,24 @@ export default function StoreAdminPage() {
 
     if (!error && data) {
       setStores(data);
+      setFilteredStores(data);
+      const uniqueAreas = Array.from(new Set(data.map((s) => s.store_area).filter(Boolean)));
+      setAreas(['전체', ...uniqueAreas]);
+    }
+  };
+
+  const handleFilter = (area: string) => {
+    setSelectedArea(area);
+    if (area === '전체') {
+      setFilteredStores(stores);
+    } else {
+      setFilteredStores(stores.filter((s) => s.store_area === area));
     }
   };
 
   const handleCreate = async () => {
     if (!newStore.store_name || !newStore.store_area) {
-      alert('지점명과 지역은 필수입니다.');
+      alert('지점명과 지역명은 필수입니다.');
       return;
     }
 
@@ -65,6 +81,20 @@ export default function StoreAdminPage() {
   return (
     <div className="p-6">
       <h1 className="text-xl font-bold mb-4">🏬 돈키호테 지점 관리</h1>
+
+      {/* 지역 필터 */}
+      <div className="mb-4">
+        <label className="font-medium mr-2">지역 필터:</label>
+        <select
+          value={selectedArea}
+          onChange={(e) => handleFilter(e.target.value)}
+          className="border px-3 py-1 rounded-md"
+        >
+          {areas.map((area) => (
+            <option key={area} value={area}>{area}</option>
+          ))}
+        </select>
+      </div>
 
       {/* 등록 폼 */}
       <div className="bg-white p-4 rounded-xl shadow mb-6 space-y-2">
@@ -100,7 +130,7 @@ export default function StoreAdminPage() {
         <button onClick={handleCreate} className="btn-primary mt-2">등록</button>
       </div>
 
-      {/* 목록 */}
+      {/* 지점 목록 */}
       <table className="w-full bg-white rounded-xl shadow overflow-hidden text-sm">
         <thead className="bg-gray-100 text-left">
           <tr>
@@ -112,7 +142,7 @@ export default function StoreAdminPage() {
           </tr>
         </thead>
         <tbody>
-          {stores.map((store) => (
+          {filteredStores.map((store) => (
             <tr key={store.id} className="border-t hover:bg-gray-50">
               <td className="p-3">{store.store_name}</td>
               <td className="p-3">{store.store_area}</td>
