@@ -97,7 +97,7 @@ export default function StoreAdminPage() {
       </div>
 
       {/* 등록 폼 */}
-      <div className="bg-white p-4 rounded-xl shadow mb-6 space-y-2">
+      <div className="bg-white p-6 rounded-xl shadow border border-gray-200 mb-6">
         <h2 className="text-lg font-bold mb-4 text-purple-700 flex items-center gap-2">
           <span className="text-purple-500">➕</span> 지점 등록
         </h2>
@@ -109,7 +109,7 @@ export default function StoreAdminPage() {
               type="text"
               value={newStore.store_name}
               onChange={(e) => setNewStore({ ...newStore, store_name: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-100"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300"
               placeholder="예: 미노오점"
             />
           </div>
@@ -119,7 +119,7 @@ export default function StoreAdminPage() {
               type="text"
               value={newStore.store_area}
               onChange={(e) => setNewStore({ ...newStore, store_area: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-100"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300"
               placeholder="예: 오사카"
             />
           </div>
@@ -129,7 +129,7 @@ export default function StoreAdminPage() {
               type="url"
               value={newStore.store_url}
               onChange={(e) => setNewStore({ ...newStore, store_url: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300"
               placeholder="https://www.donki.com/store/..."
             />
           </div>
@@ -139,7 +139,7 @@ export default function StoreAdminPage() {
               type="url"
               value={newStore.google_url}
               onChange={(e) => setNewStore({ ...newStore, google_url: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300"
               placeholder="https://maps.google.com/..."
             />
           </div>
@@ -154,7 +154,6 @@ export default function StoreAdminPage() {
             등록
           </button>
         </div>
-        
       </div>
 
       {/* 지점 목록 */}
