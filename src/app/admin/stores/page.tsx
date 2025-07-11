@@ -98,36 +98,63 @@ export default function StoreAdminPage() {
 
       {/* 등록 폼 */}
       <div className="bg-white p-4 rounded-xl shadow mb-6 space-y-2">
-        <h2 className="font-semibold mb-2">➕ 지점 등록</h2>
-        <input
-          type="text"
-          placeholder="지점명"
-          value={newStore.store_name}
-          onChange={(e) => setNewStore({ ...newStore, store_name: e.target.value })}
-          className="input"
-        />
-        <input
-          type="text"
-          placeholder="지역명"
-          value={newStore.store_area}
-          onChange={(e) => setNewStore({ ...newStore, store_area: e.target.value })}
-          className="input"
-        />
-        <input
-          type="url"
-          placeholder="지점 웹 URL (선택)"
-          value={newStore.store_url}
-          onChange={(e) => setNewStore({ ...newStore, store_url: e.target.value })}
-          className="input"
-        />
-        <input
-          type="url"
-          placeholder="Google 지도 URL (선택)"
-          value={newStore.google_url}
-          onChange={(e) => setNewStore({ ...newStore, google_url: e.target.value })}
-          className="input"
-        />
-        <button onClick={handleCreate} className="btn-primary mt-2">등록</button>
+        <h2 className="text-lg font-bold mb-4 text-purple-700 flex items-center gap-2">
+          <span className="text-purple-500">➕</span> 지점 등록
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">지점명 *</label>
+            <input
+              type="text"
+              value={newStore.store_name}
+              onChange={(e) => setNewStore({ ...newStore, store_name: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-100"
+              placeholder="예: 미노오점"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">지역명 *</label>
+            <input
+              type="text"
+              value={newStore.store_area}
+              onChange={(e) => setNewStore({ ...newStore, store_area: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-100"
+              placeholder="예: 오사카"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">지점 웹 URL (선택)</label>
+            <input
+              type="url"
+              value={newStore.store_url}
+              onChange={(e) => setNewStore({ ...newStore, store_url: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+              placeholder="https://www.donki.com/store/..."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Google 지도 URL (선택)</label>
+            <input
+              type="url"
+              value={newStore.google_url}
+              onChange={(e) => setNewStore({ ...newStore, google_url: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+              placeholder="https://maps.google.com/..."
+            />
+          </div>
+        </div>
+
+        {/* 등록 버튼 */}
+        <div className="mt-6 flex justify-end">
+          <button
+            onClick={handleCreate}
+            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-2 rounded-lg shadow"
+          >
+            등록
+          </button>
+        </div>
+        
       </div>
 
       {/* 지점 목록 */}
