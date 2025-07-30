@@ -16,6 +16,7 @@ import { Star } from 'lucide-react';
 export default function SubmitPage() {
   const [searchInput, setSearchInput] = useState('');
   const suggestions = useProductSearch(searchInput);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const areas = useAreas();
   const [selectedProduct, setSelectedProduct] = useState('');
   const [selectedArea, setSelectedArea] = useState('오사카');
@@ -46,11 +47,17 @@ export default function SubmitPage() {
 
         <AutoCompleteSearchInput
           searchInput={searchInput}
-          setSearchInput={setSearchInput}
+          setSearchInput={(v) => {
+            setSearchInput(v);
+            setShowSuggestions(true);
+          }}
           suggestions={suggestions}
-          onSelect={(value) => {
-            setSelectedProduct(value);
-            setSearchInput(value);
+          showSuggestions={showSuggestions}
+          setShowSuggestions={setShowSuggestions}
+          onSelect={(selected) => {
+            setSearchInput(selected);
+            setSelectedProduct(selected);
+            setShowSuggestions(false); 
           }}
         />
 
