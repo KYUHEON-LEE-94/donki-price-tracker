@@ -28,56 +28,57 @@ export default function VerifyModal({ isOpen, onClose }: VerifyModalProps) {
   if (!isOpen) return null;
 
   const handleSubmit = async () => {
-    if (!file) {
-      alert('사진을 업로드해주세요');
-      return;
-    }
-
+    if (!file) return alert('사진을 업로드해주세요');
+  
     try {
       setIsUploading(true);
-
-      const filePath = `${Date.now()}-${file.name}`;
-      const { error } = await supabase.storage
+  
+      const fileExt = file.name.split('.').pop();
+      const safeName = `${Date.now()}.${fileExt}`;
+      const filePath = `public/${safeName}`;
+  
+      const { data: uploadData, error: uploadError } = await supabase
+        .storage
         .from('price-certifications')
-        .upload(filePath, file);
-
-      if (error) throw error;
-
-      const { data: publicUrlData } = supabase.storage
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false,
+          contentType: file.type
+        });
+  
+      if (uploadError) throw uploadError;
+  
+      const { data: publicUrlData } = supabase
+        .storage
         .from('price-certifications')
         .getPublicUrl(filePath);
+  
       const photoUrl = publicUrlData.publicUrl;
-
-      // insert 분기 처리
-      const insertPayload: PriceReportInsert = {
-        report_date: new Date().toISOString(),
-        photo_url: photoUrl,
-        is_verified: verifyType === 'receipt',
-      };
-
-      if (verifyType === 'receipt') {
-        insertPayload.is_verified = true;
-      } else {
-        insertPayload.product_name = productName;
-        insertPayload.price = parseInt(price);
-        insertPayload.store_name = store;
-        insertPayload.is_verified = false;
-      }
-
-      const { error: insertError } = await supabase
-        .from('price_reports')
-        .insert(insertPayload);
-
-      if (insertError) throw insertError;
-
+  
+      // payload 준비
+      // const insertPayload: PriceReportInsert = {
+      //   report_date: new Date().toISOString(),
+      //   photo_url: photoUrl,
+      //   is_verified: verifyType === 'receipt',
+      // };
+  
+      // if (verifyType === 'photo') {
+      //   insertPayload.product_name = productName;
+      //   insertPayload.price = parseInt(price);
+      //   insertPayload.store_name = store;
+      //   insertPayload.is_verified = false;
+      // }
+  
+      // const { error: insertError } = await supabase
+      //   .from('price_reports')
+      //   .insert(insertPayload);
+  
+      // if (insertError) throw insertError;
+  
       alert('인증 신청이 완료되었습니다!');
       onClose();
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        alert('업로드 실패: ' + err.message);
-      } else {
-        alert('업로드 실패 (알 수 없는 오류)');
-      }
+      alert('업로드 실패: ' + (err instanceof Error ? err.message : '알 수 없는 오류'));
     } finally {
       setIsUploading(false);
     }
