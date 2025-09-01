@@ -55,11 +55,13 @@ export default function StoreAdminPage() {
       return;
     }
 
-    const { error } = await supabase.from('stores').insert({
-      id: uuidv4(),
-      ...newStore,
-      created_at: new Date().toISOString(),
-    });
+    const { error } = await supabase
+      .from('stores')
+      .insert({
+        id: uuidv4(),
+        ...newStore,
+        created_at: new Date().toISOString(),
+      });
 
     if (!error) {
       setNewStore({ store_name: '', store_area: '', store_url: '', google_url: '' });

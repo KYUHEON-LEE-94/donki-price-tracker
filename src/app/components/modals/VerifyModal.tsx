@@ -15,7 +15,12 @@ interface PriceReportInsert {
     report_date: string;
     photo_url: string;
     is_verified: boolean;
+    submitted_at: string;
+    certification_type: string;
   }
+
+const PRIE_CERTIFICATIONS_STORAGE = 'price-certifications';
+const PRIE_CERTIFICATIONS_TABLE = 'price_certifications'
 
 export default function VerifyModal({ isOpen, onClose }: VerifyModalProps) {
   const [verifyType, setVerifyType] = useState<'receipt' | 'photo'>('receipt');
@@ -37,9 +42,8 @@ export default function VerifyModal({ isOpen, onClose }: VerifyModalProps) {
       const safeName = `${Date.now()}.${fileExt}`;
       const filePath = `public/${safeName}`;
   
-      const { data: uploadData, error: uploadError } = await supabase
-        .storage
-        .from('price-certifications')
+      const { data: _, error: uploadError } = await supabase.storage
+        .from(PRIE_CERTIFICATIONS_STORAGE)
         .upload(filePath, file, {
           cacheControl: '3600',
           upsert: false,
@@ -48,32 +52,35 @@ export default function VerifyModal({ isOpen, onClose }: VerifyModalProps) {
   
       if (uploadError) throw uploadError;
   
-      const { data: publicUrlData } = supabase
-        .storage
-        .from('price-certifications')
+      const { data: publicUrlData } = supabase.storage
+        .from(PRIE_CERTIFICATIONS_STORAGE)
         .getPublicUrl(filePath);
   
-      const photoUrl = publicUrlData.publicUrl;
   
       // payload 준비
-      // const insertPayload: PriceReportInsert = {
-      //   report_date: new Date().toISOString(),
-      //   photo_url: photoUrl,
-      //   is_verified: verifyType === 'receipt',
-      // };
+      const insertPayload: PriceReportInsert = {
+        submitted_at: new Date().toISOString(),
+        photo_url: publicUrlData.publicUrl,
+        is_verified: verifyType === 'receipt',
+        certification_type: verifyType,
+        report_date: new Date().toISOString()
+      };
   
-      // if (verifyType === 'photo') {
-      //   insertPayload.product_name = productName;
-      //   insertPayload.price = parseInt(price);
-      //   insertPayload.store_name = store;
-      //   insertPayload.is_verified = false;
-      // }
+      if (verifyType === 'photo') {
+        insertPayload.product_name = productName;
+        insertPayload.price = parseInt(price);
+        insertPayload.store_name = store;
+        insertPayload.is_verified = false;
+        insertPayload.certification_type = verifyType
+      }
   
-      // const { error: insertError } = await supabase
-      //   .from('price_reports')
-      //   .insert(insertPayload);
-  
-      // if (insertError) throw insertError;
+      console.log(insertPayload);
+
+      const { error: insertError } = await supabase
+        .from(PRIE_CERTIFICATIONS_TABLE)
+        .insert(insertPayload);
+
+      if (insertError) throw insertError;
   
       alert('인증 신청이 완료되었습니다!');
       onClose();
