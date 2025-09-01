@@ -41,8 +41,8 @@ export default function VerifyModal({ isOpen, onClose }: VerifyModalProps) {
       const fileExt = file.name.split('.').pop();
       const safeName = `${Date.now()}.${fileExt}`;
       const filePath = `public/${safeName}`;
-  
-      const { data: _, error: uploadError } = await supabase.storage
+
+      const { error: uploadError } = await supabase.storage
         .from(PRIE_CERTIFICATIONS_STORAGE)
         .upload(filePath, file, {
           cacheControl: '3600',
