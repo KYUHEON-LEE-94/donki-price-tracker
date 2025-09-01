@@ -104,8 +104,6 @@ export default function CertificationAdminPage() {
             <tr>
               <th className="p-3 text-left">제출일</th>
               <th className="p-3 text-left">상품명</th>
-              <th className="p-3 text-left">가격</th>
-              <th className="p-3 text-left">지역</th>
               <th className="p-3 text-left">유형</th>
               <th className="p-3 text-left">이미지</th>
               <th className="p-3 text-left">상태</th>
@@ -119,8 +117,6 @@ export default function CertificationAdminPage() {
                   {format(new Date(item.submitted_at), 'yyyy-MM-dd HH:mm')}
                 </td>
                 <td className="p-3">{item.product_name}</td>
-                <td className="p-3">¥{item.price.toLocaleString()}</td>
-                <td className="p-3">{item.stores?.store_area ?? '-'}</td>
                 <td className="p-3">{item.certification_type}</td>
                 <td className="p-3">
                   <a
