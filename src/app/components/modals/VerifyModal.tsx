@@ -12,8 +12,7 @@ interface PriceReportInsert {
     product_name?: string;
     price?: number;
     store_name?: string;
-    report_date: string;
-    photo_url: string;
+    image_url: string;
     is_verified: boolean;
     submitted_at: string;
     certification_type: string;
@@ -60,10 +59,9 @@ export default function VerifyModal({ isOpen, onClose }: VerifyModalProps) {
       // payload 준비
       const insertPayload: PriceReportInsert = {
         submitted_at: new Date().toISOString(),
-        photo_url: publicUrlData.publicUrl,
+        image_url: publicUrlData.publicUrl,
         is_verified: verifyType === 'receipt',
         certification_type: verifyType,
-        report_date: new Date().toISOString()
       };
   
       if (verifyType === 'photo') {
@@ -74,18 +72,22 @@ export default function VerifyModal({ isOpen, onClose }: VerifyModalProps) {
         insertPayload.certification_type = verifyType
       }
   
-      console.log(insertPayload);
+      console.log('Insert payload:', insertPayload);
 
       const { error: insertError } = await supabase
         .from(PRIE_CERTIFICATIONS_TABLE)
         .insert(insertPayload);
 
-      if (insertError) throw insertError;
+      if (insertError) {
+        console.error('Database insert error:', insertError);
+        throw new Error(`데이터베이스 오류: ${insertError.message}`);
+      }
   
       alert('인증 신청이 완료되었습니다!');
       onClose();
     } catch (err: unknown) {
-      alert('업로드 실패: ' + (err instanceof Error ? err.message : '알 수 없는 오류'));
+      console.error('Full error:', err);
+      alert('업로드 실패: ' + (err instanceof Error ? err.message : JSON.stringify(err)));
     } finally {
       setIsUploading(false);
     }
